@@ -1,5 +1,6 @@
 package com.ibm.academy.cinema.apirest.userservice.controller;
 
+import com.ibm.academy.cinema.apirest.userservice.dto.LoginRequestDto;
 import com.ibm.academy.cinema.apirest.userservice.dto.SubscriberDto;
 import com.ibm.academy.cinema.apirest.userservice.entity.Subscriber;
 import com.ibm.academy.cinema.apirest.userservice.entity.User;
@@ -20,8 +21,8 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("login")
-    public ResponseEntity<?> login() {
-        return ResponseEntity.ok("login");
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @GetMapping("logout")

@@ -1,12 +1,12 @@
 package com.ibm.academy.cinema.apirest.userservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -90,5 +91,7 @@ public abstract class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+    
+    public abstract Collection<? extends GrantedAuthority> getAuthorities();
 
 }

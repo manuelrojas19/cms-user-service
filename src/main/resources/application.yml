@@ -16,3 +16,10 @@ spring:
     database: postgresql
     generate-ddl: true
     open-in-view: false
+authentication-dev:
+  auth:
+    tokenSecret: myTokenSecret
+    tokenExpirationMsec: 3600000
+    refreshTokenExpirationMsec: 77760000000
+    accessTokenCookieName: accessToken
+    refreshTokenCookieName: refreshToken
