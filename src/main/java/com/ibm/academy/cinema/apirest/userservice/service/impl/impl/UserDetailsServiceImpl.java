@@ -1,4 +1,4 @@
-package com.ibm.academy.cinema.apirest.userservice.service.impl;
+package com.ibm.academy.cinema.apirest.userservice.service.impl.impl;
 
 import com.ibm.academy.cinema.apirest.userservice.exception.NotFoundException;
 import com.ibm.academy.cinema.apirest.userservice.repository.UserRepository;

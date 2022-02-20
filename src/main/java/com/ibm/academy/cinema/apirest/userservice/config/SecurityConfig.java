@@ -56,25 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint()).and()
-                .authorizeRequests()
-                .antMatchers("/",
-                        "/error",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js").permitAll()
-                .antMatchers("/api/v*/auth/**").permitAll()
-                .anyRequest().authenticated();
-
-        http.addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .and()
+                .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

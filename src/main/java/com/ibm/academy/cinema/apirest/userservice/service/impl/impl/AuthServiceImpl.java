@@ -1,4 +1,4 @@
-package com.ibm.academy.cinema.apirest.userservice.service.impl;
+package com.ibm.academy.cinema.apirest.userservice.service.impl.impl;
 
 import com.ibm.academy.cinema.apirest.userservice.dto.LoginRequestDto;
 import com.ibm.academy.cinema.apirest.userservice.dto.LoginResponseDto;
@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDto signup(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
-        if (userRepository.existsByEmail(user.getEmail()) || userRepository.existsByUsername(user.getUsername()))
+        if (userRepository.existsByUsername(user.getEmail()) || userRepository.existsByUsername(user.getUsername()))
             throw new RuntimeException("Conflict");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));

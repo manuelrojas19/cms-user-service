@@ -1,12 +1,10 @@
 package com.ibm.academy.cinema.apirest.userservice.config;
 
-import com.ibm.academy.cinema.apirest.userservice.enums.Roles;
 import com.ibm.academy.cinema.apirest.userservice.util.JwtTokenUtil;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.filter.RequestContextFilter;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,19 +35,22 @@ public class AuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
 
-            log.info("Filet ---> {}");
-
             String token = getJwtFromRequest(request);
             log.info("Token ---> {}", token);
 
-            String username = jwtTokenUtil.getUsernameFromToken(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (Objects.nonNull(token)) {
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (!jwtTokenUtil.validateToken(token))
+                    throw new RuntimeException("Token is invalid");
 
+                String username = jwtTokenUtil.getUsernameFromToken(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
